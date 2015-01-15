@@ -3,7 +3,7 @@ thurstone_dm <- function (matrix){
 #Devuelve los valores de escala de Thurstone y la discrepancia media 
         
     matrix = data.matrix(matrix) #datos brutos
-    n = matrix[1][1]*2 #si las frecuencias dadas son absolutas, el nÃºmero de participantes es
+    n = matrix[1][1]*2 #si las frecuencias dadas son absolutas, el número de participantes es
                        #la primera celda multipilcada por dos
     observed_ps <- matrix/n  #frecuencias relativas observadas
 
@@ -29,21 +29,21 @@ thurstone_dm <- function (matrix){
         break 
         }
         
-        z_distances = data.frame() #dataframe vacÃ­o
+        z_distances = data.frame() #dataframe vacío
     
         for (i in 1:length(v_escala)){
-            # Puntuaciones z'ij en la distribuciÃ³n normal correspondiente
+            # Puntuaciones z'ij en la distribución normal correspondiente
             #a las distancias entre pares de valores de la escala obtenida
-            # para los Ã­tems
+            # para los ítems
                 row = v_escala-v_escala[i]
                 z_distances = rbind(z_distances, row) 
                
         }
     
-        theoretical_ps =data.frame(apply(z_distances, c(1,2), pnorm)) #Frecuencias teÃ³ricas
-        dif <- observed_ps - theoretical_ps #diferencia entre frecuencias observadas y teÃ³ricas
+        theoretical_ps =data.frame(apply(z_distances, c(1,2), pnorm)) #Frecuencias teóricas
+        dif <- observed_ps - theoretical_ps #diferencia entre frecuencias observadas y teóricas
     
-        sum_dif_all = c() # vector vacÃ­o
+        sum_dif_all = c() # vector vacío
     
         for (i in 1:nrow(dif)){
             #suma de las diferencias (por debajo de la diagonal)
@@ -61,17 +61,17 @@ thurstone_incompletos = function(matrix, umbral1 = NA, umbral2 = NA){
     #Toma una matriz o dataframe de las frecuencias relativas o absolutas
     #Devuelve los valores de escala de Thurstone utilizando el procedimiento para datos 
     #incompletos
-    #Se considerarÃ¡n valores perdidos aquellos que estÃ©n fuera del intervalo (umbral1, umbral2)
-    #Si no se especifican valores para umbral1 y umbral2, se establecerÃ¡n automÃ¡ticamente como 
-    #(0.01, 0.99) si hay 200 o mÃ¡s comparaciones o (0.02, 0.98) si hay menos de 200 comparaciones
+    #Se considerarán valores perdidos aquellos que estén fuera del intervalo (umbral1, umbral2)
+    #Si no se especifican valores para umbral1 y umbral2, se establecerán automáticamente como 
+    #(0.01, 0.99) si hay 200 o más comparaciones o (0.02, 0.98) si hay menos de 200 comparaciones
     
     matrix = data.matrix(matrix) #datos brutos
-    n = matrix[1][1]*2 #nÃºmero de participantes
+    n = matrix[1][1]*2 #número de participantes
     juicios = (nrow(matrix)*(nrow(matrix)-1)/2)
     observed_ps <- matrix/n  #frecuencias relativas observadas
     
     if (is.na(umbral1)&is.na(umbral2)){ 
-        #establece umbrales automÃ¡ticamente si no se han especificado
+        #establece umbrales automáticamente si no se han especificado
         if (juicios >= 200){umbral1 = 0.01; umbral2 = 0.99}      
         else {umbral1 = 0.02; umbral2 = 0.98} 
     
@@ -87,7 +87,7 @@ thurstone_incompletos = function(matrix, umbral1 = NA, umbral2 = NA){
     matrix_z <- apply(observed_ps, c(1,2), qnorm) 
     #puntuaciones z correspondientes a las frecuencias
    
-    matrix3 = c() #vector vacÃ­o
+    matrix3 = c() #vector vacío
 
     for (col in 2:ncol(matrix_z)){ 
         # crear matriz de diferencias entre columnas de matrix_z
@@ -96,7 +96,7 @@ thurstone_incompletos = function(matrix, umbral1 = NA, umbral2 = NA){
     }
     
     medias = apply(matrix3, 2, mean, na.rm = TRUE) #medias de las columnas
-    medias = append(medias, 0, 0) #aÃ±adir 0 al principio
+    medias = append(medias, 0, 0) #añadir 0 al principio
     
     v_escala = 0 #valor de escala del primer elemento. Establecer 0 como origen.
     
@@ -108,7 +108,7 @@ thurstone_incompletos = function(matrix, umbral1 = NA, umbral2 = NA){
     colnames(v_escala) = colnames(matrix) #cambiar nombres de las columnas
     rownames(v_escala) = "Valores" #cambiar nombre de fila
     
-v_escala = v_escala -min(v_escala) #Poner el mÃ­nimo en 0.
+v_escala = v_escala -min(v_escala) #Poner el mínimo en 0.
 return (val_escala = v_escala)
 
 }
